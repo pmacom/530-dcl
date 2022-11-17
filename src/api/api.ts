@@ -20,6 +20,7 @@ class API_Instance {
 
     parseData(json: any){
         const { data } = json
+        log('ALL DATA', data)
         data.forEach((entry:any) => {
             const output = {
                 thumbnail: entry.attributes?.thumbnails[0],

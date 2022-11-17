@@ -1,6 +1,10 @@
 import { Dash_Material } from "dcldash"
 import { API } from "src/api/api"
 
+// const testTexture = new Texture('images/testTweet.png')
+const testTexture = new Texture('https://tweetimages.s3.amazonaws.com/images/2022-11-14T23%3A17%3A26.500Z.png')
+
+
 export class TweetDisplay {
     public entity: Entity = new Entity()
     private tweets: TweetPanel[] = []
@@ -29,6 +33,7 @@ class TweetPanel {
     public thumbnailEntity: Entity = new Entity()
     public descriptionEntity: Entity = new Entity()
     public description: TextShape = new TextShape()
+    public tags: string[] = []
 
     constructor(public data: any, index: number){
         this.entity.addComponent(new PlaneShape())
@@ -39,7 +44,10 @@ class TweetPanel {
         this.entity.addComponent(new OnPointerDown(() => {
             openExternalURL(data.url)
         }))
-        this.entity.addComponent(new Billboard(false, true, false))
+        // this.entity.addComponent(new Billboard(false, true, false))
+
+        // this.tags.push(tags[Math.floor(Math.random()*tags.length)])
+        // this.tags.push(tags[Math.floor(Math.random()*tags.length)])
 
         this.renderThumbnail()
         this.renderDescription()
@@ -50,40 +58,48 @@ class TweetPanel {
         let height = 1
         let width = 1
         if(this.data.thumbnail?.url){
-            const texture = new Texture(this.data.thumbnail.url)
-            material.albedoTexture = texture
-            material.emissiveTexture = texture
-            material.emissiveIntensity = 1
+            material.albedoTexture = testTexture
+            material.emissiveTexture = testTexture
+            material.emissiveIntensity = .8
             material.specularIntensity = 0
-            height = this.data.thumbnail.height
-            width = this.data.thumbnail.width
+            material.emissiveColor = Color3.White()
+            height = 919 // this.data.thumbnail.height
+            width = 598 // this.data.thumbnail.width
             height = Scalar.InverseLerp(0, width, height)
         }
         this.thumbnailEntity.addComponent(material)
-        this.thumbnailEntity.addComponent(new PlaneShape())
+        const thumbnailShape = new PlaneShape()
+        thumbnailShape.withCollisions = false
+        this.thumbnailEntity.addComponent(thumbnailShape)
         this.thumbnailEntity.addComponent(new Transform({
-            position: new Vector3(0,.5,.1),
+            position: new Vector3(0,1,0),
             scale: new Vector3().set(1, -1 * height, 1),
         }))
         this.thumbnailEntity.setParent(this.entity)
     }
 
     renderDescription(){
-        let size = .1
-        this.descriptionEntity.addComponent(this.description)
-        this.descriptionEntity.addComponent(new Transform({
-            position: new Vector3(0,0,.02),
-            scale: new Vector3().set(size, size, size),
-            rotation: new Quaternion().setEuler(0, 180, 0)
-        }))
         this.descriptionEntity.setParent(this.entity)
-
-        this.description.value = 'Lorem Ipsuuum'
-        this.description.color = Color3.Black()
-        this.description.fontSize = 7
-        this.description.hTextAlign = "right"
-        this.description.vTextAlign = "top"
-        this.description.height = 10
-        this.description.width = 10
+        const description = new TextShape()
+        const transform = this.entity.getComponent(Transform)
+        this.descriptionEntity.addComponentOrReplace(description)
+        this.descriptionEntity.addComponentOrReplace(new Transform({
+            position: new Vector3(0,0,.0005),
+            rotation: new Quaternion().setEuler(0, 180, 0),
+            // position: new Vector3(0,0,(transform.scale.z/2*-1)+.01),
+            scale: new Vector3().setAll(1/100)
+        }))
+        description.value = this.tags.join("\n")
+        description.width = 100
+        description.height = 100
+        description.textWrapping = true
+        description.hTextAlign = "left"
+        description.vTextAlign = "top"
+        description.fontSize = 40
+        const p = 10
+        description.paddingTop = p
+        description.paddingRight= p
+        description.paddingBottom = p
+        description.paddingLeft = p
     }
 }
