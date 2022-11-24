@@ -7,6 +7,8 @@ export class CategoryButton {
         }))
         this.entity.addComponent(new OnPointerDown(() => {
             log('You are sorting by', this.tagName)
+        },{
+            hoverText: this.tagName
         }))
     }
 }

@@ -5,6 +5,17 @@ import { API } from "src/api/api"
 const testTexture = new Texture('https://tweetimages.s3.amazonaws.com/images/2022-11-14T23%3A17%3A26.500Z.png')
 
 
+function randomSpherePoint(x0: number,y0: number,z0: number, radius: number){
+    var u = Math.random();
+    var v = Math.random();
+    var theta = 2 * Math.PI * u;
+    var phi = Math.acos(2 * v - 1);
+    var x = x0 + (radius * Math.sin(phi) * Math.cos(theta));
+    var y = y0 + (radius * Math.sin(phi) * Math.sin(theta));
+    var z = z0 + (radius * Math.cos(phi));
+    return [x,y,z];
+ }
+
 export class TweetDisplay {
     public entity: Entity = new Entity()
     private tweets: TweetPanel[] = []
@@ -14,21 +25,11 @@ export class TweetDisplay {
             position: new Vector3(153.00, 0.88, 143.00)
         }))
         engine.addEntity(this.entity)
-
-        API.addCallback((data: any) => {
-            log({ data })
-            data.forEach((tweet:any, index: number) => {
-                const t = new TweetPanel(tweet, index)
-                this.tweets.push(t)
-                t.entity.setParent(this.entity)
-            })
-            log('The Tweet Display has this data now', data)
-        })
     }
 }
 
 const padding = 1.5
-class TweetPanel {
+export class TweetPanel {
     public entity: Entity = new Entity()
     public thumbnailEntity: Entity = new Entity()
     public descriptionEntity: Entity = new Entity()
@@ -36,9 +37,12 @@ class TweetPanel {
     public tags: string[] = []
 
     constructor(public data: any, index: number){
+
+        //220.95,1.76,151.46
+        const [x, y, z] = randomSpherePoint(220, 10, 150, 5)
         this.entity.addComponent(new PlaneShape())
         this.entity.addComponent(new Transform({
-            position: new Vector3(index+(padding*index), 0, 0),
+            position: new Vector3(index+(padding*index)+5, 0, 5),
             scale: new Vector3().setAll(2)
         }))
         this.entity.addComponent(new OnPointerDown(() => {
