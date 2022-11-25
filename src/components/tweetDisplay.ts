@@ -1,5 +1,4 @@
 import { Dash_Material } from "dcldash"
-import { API } from "src/api/api"
 
 // const testTexture = new Texture('images/testTweet.png')
 const testTexture = new Texture('https://tweetimages.s3.amazonaws.com/images/2022-11-14T23%3A17%3A26.500Z.png')
@@ -15,18 +14,6 @@ function randomSpherePoint(x0: number,y0: number,z0: number, radius: number){
     var z = z0 + (radius * Math.cos(phi));
     return [x,y,z];
  }
-
-export class TweetDisplay {
-    public entity: Entity = new Entity()
-    private tweets: TweetPanel[] = []
-
-    constructor(){
-        this.entity.addComponent(new Transform({
-            position: new Vector3(153.00, 0.88, 143.00)
-        }))
-        engine.addEntity(this.entity)
-    }
-}
 
 const padding = 1.5
 export class TweetPanel {

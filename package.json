@@ -24,7 +24,7 @@
   "dependencies": {
     "@dcl/ui-scene-utils": "^1.8.4",
     "colyseus.js": "^0.14.13",
-    "dcldash": "^0.0.34-20220711040044.commit-818b362"
+    "dcldash": "latest"
   },
   "bundledDependencies": [
     "colyseus.js",
