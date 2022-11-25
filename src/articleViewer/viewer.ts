@@ -45,6 +45,17 @@ class ArticleViewer_Controller {
         Dash_Wait(() => {
             Positioner.center(this.articlePanels)
         }, 4)
+
+
+
+        Dash_Wait(() => {
+            Positioner.orbit(this.articlePanels)
+        }, 10)
+
+
+        Dash_Wait(() => {
+            Positioner.center(this.articlePanels)
+        }, 20)
     }
 }
 

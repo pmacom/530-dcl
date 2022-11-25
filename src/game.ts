@@ -33,6 +33,6 @@ Dash_Wait(() => {
     const articleViewer = ArticleViewer
     articleViewer.init()
     articleViewer.entity.addComponentOrReplace(new Transform({
-        position: new Vector3(160.040, 30.000, 150),
+        position: new Vector3(160.040, 15.000, 150),
     }))
 }, 2)

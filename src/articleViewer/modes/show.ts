@@ -42,9 +42,9 @@ class ArticleViewMode_Default_Instance implements ArticleViewMode{
             const { x, y, z } = distributedCylinderPoint(
                 articles.length,
                 index,
-                30, // cols
-                60, // radius
-                360 // degrees
+                10,
+                20,
+                90
             )
             const t = article.entity.getComponentOrCreate(Transform)
             // t.scale = new Vector3().setAll(0)
